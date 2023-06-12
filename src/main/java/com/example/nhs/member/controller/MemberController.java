@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping("/signup")
+    @PostMapping("/member")
     public String signUp(AddMemberRequest request) {
         memberService.save(request);
         return "redirect:/login";
