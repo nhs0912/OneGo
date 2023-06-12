@@ -33,3 +33,6 @@ spring:
   integration:
     management:
       default-logging-enabled: true
+jwt:
+  issuer: nhs0912@nate.com
+  secret_key: onego-springboot
