@@ -1,5 +1,6 @@
 package com.example.nhs.member.domain;
 
+import com.example.nhs.base.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,7 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Member implements UserDetails {
+public class Member extends BaseEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -32,10 +32,34 @@ public class Member implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "grade")
+    private String grade;
+
+    @Column(name = "role")
+    private String role;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "teamId")
+    private Long teamId;
+
     @Builder
-    public Member(String emplyeeId, String password, String auth) {
+    public Member(String emplyeeId, String password, String name) {
         this.employeeId = emplyeeId;
         this.password = password;
+        this.name = name;
+    }
+
+    @Builder
+    public Member(String emplyeeId, String password, String name, String grade, String role, String status, Long teamId) {
+        this(emplyeeId, password, name);
+        this.role = role;
+        this.grade = grade;
+        this.email = email;
     }
 
     @Override
@@ -49,7 +73,7 @@ public class Member implements UserDetails {
     }
 
     @Override
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 

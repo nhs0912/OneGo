@@ -1,0 +1,44 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  security:
+    user:
+      name: nhs0912
+      password: 1234
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    url: jdbc:h2:~/test
+    user: sa
+    password:
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+      org.hibernate.type: trace
+      org.springframework: debug
+  integration:
+    management:
+      default-logging-enabled: true
+jwt:
+  issuer: nhs0912@nate.com
+  secret_key: onego-springboot
+  token-validity-in-seconds: 28800 #8 hours
