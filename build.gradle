@@ -40,3 +40,11 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+task copyPrivate(type: Copy){
+	copy{
+		from './submodule_OneGo'
+		include "*.yml"
+		into 'src/main/resources'
+	}
+}
