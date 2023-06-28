@@ -2,8 +2,13 @@ package com.example.nhs.team.domain;
 
 import com.example.nhs.base.domain.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,4 +16,8 @@ public class Team extends BaseEntity {
 
     @Column(name = "name")
     private String name;
+
+//    @OneToMany
+//    @JoinColumn(name = "id")
+//    private List<Member> members;
 }

@@ -4,18 +4,21 @@ import com.example.nhs.member.domain.Member;
 import com.example.nhs.member.repository.MemberRepository;
 import com.example.nhs.member.service.dto.AddMemberRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Long save(AddMemberRequest dto) {
+        log.info("dto info = { }", dto.toString());
         return memberRepository.save(Member.builder()
-                .emplyeeId(dto.getEmployeeId())
+                .employeeId(dto.getEmployeeId())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .build()).getId();
     }

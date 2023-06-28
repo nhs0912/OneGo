@@ -3,9 +3,9 @@ package com.example.nhs.member.domain;
 import com.example.nhs.base.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,21 +13,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "members")
+@Table(name = "member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@SuperBuilder
 public class Member extends BaseEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "email", nullable = true, unique = true)
-    private String email;
-
     @Column(name = "employeeId", nullable = false, unique = true)
     String employeeId;
+
+    @Column(name = "email", nullable = true, unique = true)
+    private String email;
 
     @Column(name = "password")
     private String password;
@@ -47,16 +48,17 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(name = "teamId")
     private Long teamId;
 
-    @Builder
-    public Member(String emplyeeId, String password, String name) {
-        this.employeeId = emplyeeId;
+
+    public Member(String employeeId, String password, String name) {
+        this.employeeId = employeeId;
         this.password = password;
         this.name = name;
+
     }
 
-    @Builder
-    public Member(String emplyeeId, String password, String name, String grade, String role, String status, Long teamId) {
-        this(emplyeeId, password, name);
+
+    public Member(String employeeId, String password, String name, String grade, String role, String status, Long teamId) {
+        this(employeeId, password, name);
         this.role = role;
         this.grade = grade;
         this.email = email;

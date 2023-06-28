@@ -1,30 +1,137 @@
-<script setup lang="ts">
-// import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
-    <h1>SignUp</h1>
-    <main>
-        <form>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="text" class="form-control" id="employeeId" aria-describedby="emailHelp" placeholder="Enter id">
-                <small id="emailHelp" class="form-text text-muted">사번을 입력해주세요(ex : MTXXXXX)</small>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-<!--            <div class="form-group form-check">-->
-<!--                <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
-<!--                <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
-<!--            </div>-->
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </main>
+  <el-form
+    ref="ruleFormRef"
+    :model="ruleForm"
+    status-icon
+    :rules="rules"
+    label-width="120px"
+    class="demo-ruleForm"
+  >
+    <el-form-item label="id" prop="id">
+      <el-input v-model="ruleForm.id" type="text" autocomplete="off" />
+    </el-form-item>
+    <el-form-item label="Password" prop="pass">
+      <el-input v-model="ruleForm.pass" type="password" autocomplete="off" />
+    </el-form-item>
+    <el-form-item label="Confirm" prop="checkPass">
+      <el-input
+        v-model="ruleForm.checkPass"
+        type="password"
+        autocomplete="off"
+      />
+    </el-form-item>
+    <el-form-item>
+      <el-button type="success" @click="submitForm(ruleFormRef)"
+      >SignUp
+      </el-button>
+      <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+      <el-button type="danger" @click="home">back</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { reactive, ref } from "vue";
+import type { FormInstance, FormRules } from "element-plus";
+import { useRouter } from "vue-router";
+import axios from "axios";
 
+// const id = ref("");
+// const password = ref("");
+const signUp = function(){
+  console.log(ruleForm.id, ruleForm.pass)
+  axios.post("http://localhost:8080/member",null,{params:{
+    employeeId : ruleForm.id,
+    password: ruleForm.pass
+  }
+  }).then(function(response){
+    console.log("response== {}" , response);
+  }).catch(function(error){
+    console.log("error== {}" , error);
+  });
+}
+const ruleFormRef = ref<FormInstance>();
+const router = useRouter();
+const home = function() {
+  router.push({ path: "/" });
+};
+const checkId = (rule: any, value: any, callback: any) => {
+  if (!value) {
+    return callback(new Error("Please input the Id"));
+  }
+  setTimeout(() => {
+    if (!Number.isInteger(value)) {
+      callback(new Error("Please input digits"));
+    } else {
+      if (value.length < 6) {
+        callback(new Error("The length of id must be greater than 6"));
+      } else {
+        callback();
+      }
+    }
+  }, 1000);
+};
 
+const validateId = (rule: any, value: any, callback: any) => {
+  if (value === "") {
+    callback(new Error("Please input the id"));
+  } else {
+    if (ruleForm.id !== "") {
+      if (!ruleFormRef.value) return;
+      ruleFormRef.value.validateField("checkId", () => null);
+    }
+    callback();
+  }
+};
+const validatePass = (rule: any, value: any, callback: any) => {
+  if (value === "") {
+    callback(new Error("Please input the password"));
+  } else {
+    if (ruleForm.checkPass !== "") {
+      if (!ruleFormRef.value) return;
+      ruleFormRef.value.validateField("checkPass", () => null);
+    }
+    callback();
+  }
+};
+const validatePass2 = (rule: any, value: any, callback: any) => {
+  if (value === "") {
+    callback(new Error("Please input the password again"));
+  } else if (value !== ruleForm.pass) {
+    callback(new Error("Two inputs don't match!"));
+  } else {
+    callback();
+  }
+};
+
+const ruleForm = reactive({
+  pass: "",
+  checkPass: "",
+  id: ""
+});
+
+const rules = reactive<FormRules<typeof ruleForm>>({
+  pass: [{ validator: validatePass, trigger: "blur" }],
+  checkPass: [{ validator: validatePass2, trigger: "blur" }],
+  id: [{ validator: validateId, trigger: "blur" }]
+});
+
+const submitForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.validate((valid) => {
+    if (valid) {
+      signUp();
+      console.log("submit!");
+
+    } else {
+      console.log("error submit!");
+      return false;
+    }
+  });
+};
+
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.resetFields();
+};
 </script>

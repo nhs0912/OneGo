@@ -8,21 +8,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @Slf4j
 public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/member")
     public String signUp(AddMemberRequest request) {
-        log.debug("request : {} ", request);
+        log.info("request ====== {} ", request);
         memberService.save(request);
-        return "redirect:/login";
+        return "ok";
+//        return "redirect:/login";
     }
 
     @GetMapping("/logout")

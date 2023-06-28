@@ -1,13 +1,18 @@
 <script setup lang="ts">
+// import { useDark, useToggle } from '@vueuse/core'
 import Header from "@/components/Header.vue";
 import Content from "@/components/Content.vue";
 import SignUp from "@/views/SignUpView.vue";
 import Login from "@/views/Login.vue";
+
+
 </script>
 
 <template>
   <Header/>
+
   <RouterView/>
+
 </template>
 
 <style>
