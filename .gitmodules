@@ -1,0 +1,3 @@
+[submodule "front/submodule_OneGo"]
+	path = front/submodule_OneGo
+	url = https://github.com/nhs0912/submodule_OneGo.git
