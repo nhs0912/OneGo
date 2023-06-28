@@ -35,23 +35,21 @@ import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { useRouter } from "vue-router";
 import axios from "axios";
+const ruleFormRef = ref<FormInstance>();
+const router = useRouter();
 
-// const id = ref("");
-// const password = ref("");
 const signUp = function(){
   console.log(ruleForm.id, ruleForm.pass)
-  axios.post("http://localhost:8080/member",null,{params:{
+  axios.post("http://localhost:8888/member", {
     employeeId : ruleForm.id,
     password: ruleForm.pass
-  }
   }).then(function(response){
-    console.log("response== {}" , response);
+    home();
   }).catch(function(error){
     console.log("error== {}" , error);
   });
 }
-const ruleFormRef = ref<FormInstance>();
-const router = useRouter();
+
 const home = function() {
   router.push({ path: "/" });
 };

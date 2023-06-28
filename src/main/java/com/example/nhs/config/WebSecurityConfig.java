@@ -33,14 +33,14 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()// 인증, 인가 설정
                 .requestMatchers("/posts","/write","/login", "/signup", "/member").permitAll()
                 .anyRequest().authenticated()
-//                .and()
-//                .formLogin() // 폼 기반 로그인 설정
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/articles")
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/login")
-//                .invalidateHttpSession(true)
+                .and()
+                .formLogin() // 폼 기반 로그인 설정
+                .loginPage("http://localhost:5000/")
+                .defaultSuccessUrl("/articles")
+                .and()
+                .logout()
+                .logoutSuccessUrl("http://localhost:5000/")
+                .invalidateHttpSession(true)
                 .and()
                 .csrf().disable()
                 .build();
