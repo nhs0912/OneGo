@@ -1,6 +1,8 @@
 package com.example.nhs.member.service;
 
 import com.example.nhs.member.domain.Member;
+import com.example.nhs.member.enums.MemberRole;
+import com.example.nhs.member.enums.MemberStatus;
 import com.example.nhs.member.repository.MemberRepository;
 import com.example.nhs.member.service.dto.AddMemberRequest;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +22,12 @@ public class MemberService {
         return memberRepository.save(Member.builder()
                 .employeeId(dto.getEmployeeId())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
+                .name(dto.getName())
+                .status(MemberStatus.NORMAL)
+                .role(MemberRole.MEMBER)
                 .build()).getId();
     }
+
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));

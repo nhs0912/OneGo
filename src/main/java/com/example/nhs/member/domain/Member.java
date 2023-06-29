@@ -1,6 +1,8 @@
 package com.example.nhs.member.domain;
 
 import com.example.nhs.base.domain.BaseEntity;
+import com.example.nhs.member.enums.MemberRole;
+import com.example.nhs.member.enums.MemberStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,10 +42,12 @@ public class Member extends BaseEntity implements UserDetails {
     private String grade;
 
     @Column(name = "role")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private MemberStatus status;
 
     @Column(name = "teamId")
     private Long teamId;
@@ -57,11 +61,12 @@ public class Member extends BaseEntity implements UserDetails {
     }
 
 
-    public Member(String employeeId, String password, String name, String grade, String role, String status, Long teamId) {
+    public Member(String employeeId, String password, String name, String grade, MemberRole role, MemberStatus status, Long teamId) {
         this(employeeId, password, name);
         this.role = role;
         this.grade = grade;
         this.email = email;
+        this.status = status;
     }
 
     @Override

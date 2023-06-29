@@ -57,7 +57,7 @@ class TokenApiControllerTest {
         final String url = "/api/token";
 
         Member testMember = memberRepository.save(Member.builder()
-                .emplyeeId("MT01763")
+                .employeeId("MT01763")
                 .password("1234")
                 .build());
 

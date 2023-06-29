@@ -8,9 +8,10 @@ import lombok.Setter;
 public class AddMemberRequest {
     private String employeeId;
     private String password;
+    private String name;
 
     @Override
     public String toString() {
-        return "employeeId = " + employeeId + " , " + "password = " + password;
+        return "employeeId = " + employeeId + " , " + "password = " + password + " , name= " + name;
     }
 }

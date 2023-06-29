@@ -3,7 +3,7 @@
 import Header from "@/components/Header.vue";
 import Content from "@/components/Content.vue";
 import SignUp from "@/views/SignUpView.vue";
-import Login from "@/views/Login.vue";
+import Login from "@/views/LoginView.vue";
 
 
 </script>

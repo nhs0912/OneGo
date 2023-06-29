@@ -34,8 +34,9 @@ public class TokenProviderTest {
     void generateToken() {
         //given
         Member testMember = memberRepository.save(Member.builder()
-                .emplyeeId("MT01763")
+                .employeeId("MT01763")
                 .password("1234")
+                .name("노희석")
                 .build()
         );
 

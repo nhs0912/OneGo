@@ -20,6 +20,9 @@
         autocomplete="off"
       />
     </el-form-item>
+    <el-form-item label="name" prop="name">
+      <el-input v-model="ruleForm.name" type="text" autocomplete="off" />
+    </el-form-item>
     <el-form-item>
       <el-button type="success" @click="submitForm(ruleFormRef)"
       >SignUp
@@ -35,20 +38,22 @@ import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { useRouter } from "vue-router";
 import axios from "axios";
+
 const ruleFormRef = ref<FormInstance>();
 const router = useRouter();
 
-const signUp = function(){
-  console.log(ruleForm.id, ruleForm.pass)
+const signUp = function() {
+  console.log(ruleForm.id, ruleForm.pass);
   axios.post("http://localhost:8888/member", {
-    employeeId : ruleForm.id,
-    password: ruleForm.pass
-  }).then(function(response){
+    employeeId: ruleForm.id,
+    password: ruleForm.pass,
+    name: ruleForm.name
+  }).then(function(response) {
     home();
-  }).catch(function(error){
-    console.log("error== {}" , error);
+  }).catch(function(error) {
+    console.log("error== {}", error);
   });
-}
+};
 
 const home = function() {
   router.push({ path: "/" });
@@ -63,6 +68,23 @@ const checkId = (rule: any, value: any, callback: any) => {
     } else {
       if (value.length < 6) {
         callback(new Error("The length of id must be greater than 6"));
+      } else {
+        callback();
+      }
+    }
+  }, 1000);
+};
+
+const checkName = (rule: any, value: any, callback: any) => {
+  if (!value) {
+    return callback(new Error("Please input the name"));
+  }
+  setTimeout(() => {
+    if (!Number.isInteger(value)) {
+      callback(new Error("Please input digits"));
+    } else {
+      if (value.length() < 6) {
+        callback(new Error("The length of name must be greater than 6"));
       } else {
         callback();
       }
@@ -102,16 +124,30 @@ const validatePass2 = (rule: any, value: any, callback: any) => {
   }
 };
 
+const validateName = (rule: any, value: any, callback: any) => {
+  if (value === "") {
+    callback(new Error("Please input the name"));
+  } else {
+    if (ruleForm.name !== "") {
+      if (!ruleFormRef.value) return;
+      ruleFormRef.value.validateField("checkName", () => null);
+    }
+    callback();
+  }
+};
+
 const ruleForm = reactive({
   pass: "",
   checkPass: "",
-  id: ""
+  id: "",
+  name: ""
 });
 
 const rules = reactive<FormRules<typeof ruleForm>>({
   pass: [{ validator: validatePass, trigger: "blur" }],
   checkPass: [{ validator: validatePass2, trigger: "blur" }],
-  id: [{ validator: validateId, trigger: "blur" }]
+  id: [{ validator: validateId, trigger: "blur" }],
+  name: [{ validator: validateName, trigger: "blur" }]
 });
 
 const submitForm = (formEl: FormInstance | undefined) => {
