@@ -32,4 +32,9 @@ public class MemberService {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
+
+    public Member findByEmployeeId(String employeeId) {
+        return memberRepository.findByEmployeeId(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+    }
 }

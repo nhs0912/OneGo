@@ -26,6 +26,7 @@
 import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const ruleFormRef = ref<FormInstance>();
 
@@ -34,6 +35,12 @@ const signup = function() {
   route.push({
     path: "/signup"
   });
+};
+
+const goWriteView = function() {
+  route.push(({
+    path:"/write"
+  }));
 };
 const checkId = (rule: any, value: any, callback: any) => {
   if (!value) {
@@ -89,7 +96,17 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate((valid) => {
     if (valid) {
-      console.log("submit!");
+      axios.post("http://localhost:8888/signin", {
+        employeeId: ruleForm.id,
+        password: ruleForm.pass
+      }).then(function(response){
+        console.log("login success")
+        goWriteView();
+      }).catch(function(error){
+        console.log("login error")
+      });
+
+
     } else {
       console.log("error submit!");
       return false;
