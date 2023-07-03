@@ -24,7 +24,8 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
-import type { FormInstance, FormRules } from "element-plus";
+import type {FormInstance} from "element-plus"
+import type {FormRules } from 'element-plus';
 import { useRouter } from "vue-router";
 import axios from "axios";
 
@@ -59,6 +60,23 @@ const checkId = (rule: any, value: any, callback: any) => {
   }, 1000);
 };
 
+const checkPw = (rule: any, value: any, callback: any) => {
+  if (!value) {
+    return callback(new Error("Please input the password2"));
+  }
+  setTimeout(() => {
+    if (!Number.isInteger(value)) {
+      callback(new Error("Please input digits"));
+    } else {
+      if (value.length < 6) {
+        callback(new Error("The length of id must be greater than 6"));
+      } else {
+        callback();
+      }
+    }
+  }, 1000);
+};
+
 const validateId = (rule: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("Please input the id"));
@@ -74,9 +92,9 @@ const validatePass = (rule: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("Please input the password"));
   } else {
-    if (ruleForm.checkPass !== "") {
+    if (ruleForm.pass !== "") {
       if (!ruleFormRef.value) return;
-      ruleFormRef.value.validateField("checkPass", () => null);
+      ruleFormRef.value.validateField("checkPw", () => null);
     }
     callback();
   }
