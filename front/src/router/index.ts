@@ -10,7 +10,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect : "/signin"
+      redirect: "/signin"
     },
     {
       path: '/home',
@@ -19,7 +19,7 @@ const router = createRouter({
     },
     {
       path: '/signin',
-      name: 'login',
+      name: 'signin',
       component: LoginView2
     },
     {

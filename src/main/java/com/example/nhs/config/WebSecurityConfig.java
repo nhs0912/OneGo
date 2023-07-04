@@ -39,18 +39,18 @@ public class WebSecurityConfig {
                 .cors().configurationSource(corsConfigureationSource())
                 .and()
                 .authorizeHttpRequests()// 인증, 인가 설정
-                .requestMatchers("/posts", "/write", "/login", "/signup", "/member").permitAll()
+                .requestMatchers("/posts", "/write", "/signup", "/member","/signin").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin() // 폼 기반 로그인 설정
-                .loginPage(URL_ADDRESS)
-                .defaultSuccessUrl(URL_ADDRESS + "/write")
+//                .loginPage(URL_ADDRESS+ "/signin")
+//                .defaultSuccessUrl(URL_ADDRESS + "/write")
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .logout()
-                .logoutSuccessUrl(URL_ADDRESS)
+//                .logoutSuccessUrl(URL_ADDRESS)
                 .invalidateHttpSession(true)
                 .and()
                 .csrf().disable()
@@ -78,7 +78,7 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigureationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*");
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5000"));
+        configuration.setAllowedOrigins(Arrays.asList(URL_ADDRESS));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

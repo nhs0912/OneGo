@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,7 @@ public class MemberController {
     private final MemberService memberService;
     private final JwtProperties jwtProperties;
     private final TokenProvider tokenProvider;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/member")
     public String signUp(@RequestBody AddMemberRequest request) {
@@ -47,11 +50,11 @@ public class MemberController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<SignInMemberResponse> signIn(@RequestBody SignInMemberRequest request) {
+    public ResponseEntity<SignInMemberResponse> signin(@RequestBody SignInMemberRequest request) {
         log.info("signin request ====== {} ", request);
         Member member = memberService.findByEmployeeId(request.getEmployeeId());
 
-        if (!member.getPassword().equals(request.getPassword())) {
+        if (!checkPassword(member.getPassword(), request.getPassword())) {
             throw new IllegalArgumentException("비밀번호를 확인하세요.");
         }
 
@@ -60,6 +63,13 @@ public class MemberController {
         SignInMemberResponse signInMemberResponse = SignInMemberResponse.builder()
                 .token(generatedToken)
                 .build();
-        return new ResponseEntity<>(signInMemberResponse, HttpStatus.OK);
+        log.info("response === {}", signInMemberResponse);
+        Authentication authentication = tokenProvider.getAuthentication(generatedToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(signInMemberResponse);
+    }
+    private boolean checkPassword(String password, String inputPassword) {
+        return bCryptPasswordEncoder.matches(inputPassword, password);
     }
 }

@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
-import type {FormInstance} from "element-plus"
+import type {FormInstance} from "element-plus";
 import type {FormRules } from 'element-plus';
 import { useRouter } from "vue-router";
 import axios from "axios";
