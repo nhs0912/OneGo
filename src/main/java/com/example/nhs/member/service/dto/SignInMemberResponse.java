@@ -11,4 +11,5 @@ import lombok.ToString;
 @ToString
 public class SignInMemberResponse {
     private String token;
+    private String refreshToken;
 }

@@ -1,13 +1,18 @@
 package com.example.nhs.token.domain;
 
+import com.example.nhs.base.domain.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
-public class RefreshToken {
+@SuperBuilder
+public class RefreshToken extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

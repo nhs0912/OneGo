@@ -41,7 +41,7 @@ public class TokenProviderTest {
         );
 
         //when
-        String token = tokenProvider.generateToken(testMember, Duration.ofDays(14));
+        String token = tokenProvider.generateAccessToken(testMember, Duration.ofDays(14));
         //then
         Long memberId = Jwts.parser()
                 .setSigningKey(jwtProperties.getSecretKey())

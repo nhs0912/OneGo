@@ -26,7 +26,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "employeeId", nullable = false, unique = true)
+    @Column(name = "employee_id", nullable = false, unique = true)
     String employeeId;
 
     @Column(name = "email", nullable = true, unique = true)
@@ -49,7 +49,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-    @Column(name = "teamId")
+    @Column(name = "team_id")
     private Long teamId;
 
 

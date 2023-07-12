@@ -5,6 +5,8 @@ import com.example.nhs.token.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Service
 public class RefreshTokenService {
@@ -15,4 +17,14 @@ public class RefreshTokenService {
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected token"));
     }
 
+    public void saveRefreshToken(Long memberId, String refreshToken) {
+        RefreshToken madeRefreshToken = RefreshToken.builder()
+                .memberId(memberId)
+                .refreshToken(refreshToken)
+                .createdDate(LocalDateTime.now())
+                .lastModifiedDate(LocalDateTime.now())
+                .build();
+
+        refreshTokenRepository.save(madeRefreshToken);
+    }
 }

@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -25,6 +27,8 @@ public class MemberService {
                 .name(dto.getName())
                 .status(MemberStatus.NORMAL)
                 .role(MemberRole.MEMBER)
+                .createdDate(LocalDateTime.now())
+                .lastModifiedDate(LocalDateTime.now())
                 .build()).getId();
     }
 

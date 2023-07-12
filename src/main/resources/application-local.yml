@@ -32,6 +32,8 @@ spring:
     user: sa
     password:
 
+
+
   logging:
     level:
       org.hibernate.SQL: debug

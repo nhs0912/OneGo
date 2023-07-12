@@ -22,10 +22,18 @@ import java.util.Set;
 public class TokenProvider {
     private final JwtProperties jwtProperties;
 
-    public String generateToken(Member member, Duration expiredAt) {
+    public String generateAccessToken(Member member, Duration expiredAt) {
         Date now = new Date();
         return makeToken(new Date(now.getTime() + expiredAt.toMillis()), member);
+    }
 
+    public String generateRefreshToken(Member member, Duration expiredAt) {
+        Date now = new Date();
+        return Jwts.builder()
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + expiredAt.toMillis()))
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
+                .compact();
     }
 
     //JWT Token 생성 method
@@ -40,7 +48,7 @@ public class TokenProvider {
                 .setExpiration(expiry) //내용 exp : expiry 멤버 변숫값
                 .setSubject(member.getEmployeeId()) //내용 sub : 멤버아이디
                 .claim("id", member.getId())// 클래임 id : Member id
-                //  서명  비밀값과 함께해시값을 HS256 식으로 암호화
+                //  서명  비밀값과 함께 해시값을 HS256 식으로 암호화
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
     }
@@ -53,7 +61,7 @@ public class TokenProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            return false; //복홓ㅘ 과정에서 에러가 나면 유효하지 않은 토큰
+            return false; //복호화 과정에서 에러가 나면 유효하지 않은 토큰
         }
     }
 

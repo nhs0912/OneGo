@@ -36,22 +36,18 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .httpBasic()
+                .disable()
                 .cors().configurationSource(corsConfigureationSource())
                 .and()
                 .authorizeHttpRequests()// 인증, 인가 설정
-                .requestMatchers("/posts", "/write", "/signup", "/member","/signin").permitAll()
+                .requestMatchers("/posts", "/signup", "/member","/signin").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin() // 폼 기반 로그인 설정
-//                .loginPage(URL_ADDRESS+ "/signin")
-//                .defaultSuccessUrl(URL_ADDRESS + "/write")
-                .and()
+//                .formLogin() // 폼 기반 로그인 설정
+//                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .logout()
-//                .logoutSuccessUrl(URL_ADDRESS)
-                .invalidateHttpSession(true)
                 .and()
                 .csrf().disable()
                 .build();

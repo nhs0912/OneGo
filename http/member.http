@@ -2,8 +2,7 @@
 # @no-redirect
 POST http://localhost:8888/signin
 Content-Type: application/json
-
 {
-"employeeId" : "test123",
-"password":"123"
+"employeeId" : "test",
+"password":"test"
 }
