@@ -2,6 +2,7 @@ package com.example.nhs.member.controller;
 
 import com.example.nhs.config.jwt.JwtProperties;
 import com.example.nhs.config.jwt.TokenProvider;
+import com.example.nhs.member.controller.dto.TestInputIn;
 import com.example.nhs.member.domain.Member;
 import com.example.nhs.member.service.MemberService;
 import com.example.nhs.member.service.dto.AddMemberRequest;
@@ -41,8 +42,10 @@ public class MemberController {
 
 
     @PostMapping("/test")
-    public String testSignin() {
+    public String testSignin(@RequestBody TestInputIn testInputIn) {
+
         log.info("test method 실행");
+        log.info("testInputIn === {}", testInputIn);
         return "test success";
     }
 
@@ -73,11 +76,8 @@ public class MemberController {
         }
 
         String generatedToken = tokenProvider.generateAccessToken(member, Duration.ofHours(2));
-
-
         String generatedRefreshToken = tokenProvider.generateRefreshToken(member, Duration.ofHours(24));
-
-//        refreshTokenService.saveRefreshToken(member.getId(), generatedRefreshToken);
+        refreshTokenService.saveRefreshToken(member.getId(), generatedRefreshToken);
 
         SignInMemberResponse signInMemberResponse = SignInMemberResponse.builder()
                 .token(generatedToken)
@@ -89,7 +89,6 @@ public class MemberController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer" + generatedToken)
-                .header("refreshToken===" + generatedRefreshToken)
                 .build();
 
 

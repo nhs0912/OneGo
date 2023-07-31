@@ -1,5 +1,7 @@
 package com.example.nhs.config;
 
+import com.example.nhs.config.jwt.TokenAuthenticationFilter;
+import com.example.nhs.config.jwt.TokenProvider;
 import com.example.nhs.member.service.MemberDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,7 +27,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class WebSecurityConfig {
     private static final String URL_ADDRESS = "http://localhost:5000";
     private final MemberDetailService memberService;
-
+    private final TokenProvider tokenProvider;
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
@@ -36,21 +39,21 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .authorizeHttpRequests()// 인증, 인가 설정
+                .requestMatchers("/posts", "/signup", "/member", "/signin").permitAll()
+                .anyRequest().authenticated()
+                .and()
                 .httpBasic()
                 .disable()
                 .cors().configurationSource(corsConfigureationSource())
                 .and()
-                .authorizeHttpRequests()// 인증, 인가 설정
-                .requestMatchers("/posts", "/signup", "/member","/signin").permitAll()
-                .anyRequest().authenticated()
-                .and()
-//                .formLogin() // 폼 기반 로그인 설정
-//                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .csrf().disable()
+                .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class )
                 .build();
+
     }
 
     //인증 관리자 관련 설정

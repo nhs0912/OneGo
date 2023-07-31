@@ -8,10 +8,15 @@ const content = ref("");
 const write = function(){
   console.log(title.value , content.value)
   // axios.get("http://localhost:8080/write");
-  axios.post("http://localhost:8080/posts",{
+  axios.post("http://localhost:8888/test",{
     title : title.value,
     content: content.value
+  }).then(function(response){
+    console.log("write success " + response);
+  }).catch(function(error){
+    console.log("write error " + error)
   });
+
 }
 
 
