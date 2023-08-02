@@ -9,9 +9,10 @@ public class AddMemberRequest {
     private String employeeId;
     private String password;
     private String name;
+    private String memberRole;
 
     @Override
     public String toString() {
-        return "employeeId = " + employeeId + " , " + "password = " + password + " , name= " + name;
+        return "employeeId = " + employeeId + " , " + "password = " + password + " , name= " + name + " ,memberRole= " + memberRole;
     }
 }

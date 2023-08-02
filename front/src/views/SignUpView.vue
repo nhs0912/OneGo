@@ -23,6 +23,27 @@
     <el-form-item label="name" prop="name">
       <el-input v-model="ruleForm.name" type="text" autocomplete="off" />
     </el-form-item>
+    <el-form-item label="team id" prop="teamId">
+    <el-select v-model="ruleForm.teamId" class="m-2" placeholder="Select" size="small">
+      <el-option
+        v-for="item in teams"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-select>
+      </el-form-item>
+
+    <el-form-item label="memberRole" prop="memberRole">
+      <el-select v-model="ruleForm.memberRole" class="m-2" placeholder="Select" size="small">
+        <el-option
+          v-for="item in memberRoles"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
+      </el-form-item>
     <el-form-item>
       <el-button type="success" @click="submitForm(ruleFormRef)"
       >SignUp
@@ -47,13 +68,46 @@ const signUp = function() {
   axios.post("http://localhost:8888/member", {
     employeeId: ruleForm.id,
     password: ruleForm.pass,
-    name: ruleForm.name
+    name: ruleForm.name,
+    teamId: ruleForm.teamId,
+    memberRole: ruleForm.memberRole
   }).then(function(response) {
     home();
   }).catch(function(error) {
     console.log("error== {}", error);
   });
 };
+
+// const memberRole = "";
+
+const memberRoles = [
+  {
+    value: "01",
+    label: "ADMIN"
+  },
+  {
+    value: "02",
+    label: "MEMBER",
+    selected:true
+  },
+
+]
+
+
+const teams = [
+  {
+    value: "01",
+    label: "FO"
+  },
+  {
+    value: "02",
+    label: "BO"
+  },
+  {
+    value: "03",
+    label: "CARD"
+  },
+]
 
 const home = function() {
   router.push({ path: "/" });
@@ -140,7 +194,9 @@ const ruleForm = reactive({
   pass: "",
   checkPass: "",
   id: "",
-  name: ""
+  name: "",
+  teamId: "",
+  memberRole:""
 });
 
 const rules = reactive<FormRules<typeof ruleForm>>({

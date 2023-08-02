@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -53,6 +54,11 @@ public class MemberController {
     @Transactional
     public String signUp(@RequestBody AddMemberRequest request) {
         log.info("request ====== {} ", request);
+        Member member = memberService.findByEmployeeId(request.getEmployeeId());
+
+        if(member != null){
+                throw new IllegalArgumentException("이미 가입되어있는 회원입니다.");
+        }
         memberService.save(request);
         return HttpStatus.OK.toString();
     }
@@ -88,10 +94,15 @@ public class MemberController {
         Authentication authentication = tokenProvider.getAuthentication(generatedToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer" + generatedToken)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + generatedToken)
                 .build();
+    }
 
-
+    //Spring EL
+    @PostMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String admin(){
+        return "admin page 입니다.";
     }
 
     private boolean checkPassword(String password, String inputPassword) {
