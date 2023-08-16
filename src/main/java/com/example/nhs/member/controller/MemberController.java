@@ -54,11 +54,11 @@ public class MemberController {
     @Transactional
     public String signUp(@RequestBody AddMemberRequest request) {
         log.info("request ====== {} ", request);
-        Member member = memberService.findByEmployeeId(request.getEmployeeId());
-
-        if(member != null){
-                throw new IllegalArgumentException("이미 가입되어있는 회원입니다.");
-        }
+//        Member member = memberService.findByEmployeeId(request.getEmployeeId());
+//
+//        if(member != null){
+//                throw new IllegalArgumentException("이미 가입되어있는 회원입니다.");
+//        }
         memberService.save(request);
         return HttpStatus.OK.toString();
     }

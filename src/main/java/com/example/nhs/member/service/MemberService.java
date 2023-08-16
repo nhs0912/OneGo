@@ -26,6 +26,7 @@ public class MemberService {
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .status(MemberStatus.NORMAL)
+                .teamId(dto.getTeamId())
                 .role(MemberRole.valueFrom(dto.getMemberRole()))
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
