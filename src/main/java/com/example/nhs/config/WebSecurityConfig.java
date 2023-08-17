@@ -41,18 +41,18 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf().disable()
                 .authorizeHttpRequests()// 인증, 인가 설정
                 .requestMatchers("/posts", "/signup", "/member", "/signin").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
                 .disable()
-                .cors().configurationSource(corsConfigureationSource())
+                .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .csrf().disable()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class )
                 .build();
 
@@ -76,13 +76,16 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigureationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*");
         configuration.setAllowedOrigins(Arrays.asList(URL_ADDRESS));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
+        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("accessToken");
+        configuration.addExposedHeader("refreshToken");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

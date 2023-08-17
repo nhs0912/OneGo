@@ -1,6 +1,5 @@
 package com.example.nhs.member.controller;
 
-import com.example.nhs.config.jwt.JwtProperties;
 import com.example.nhs.config.jwt.TokenProvider;
 import com.example.nhs.member.controller.dto.TestInputIn;
 import com.example.nhs.member.domain.Member;
@@ -8,7 +7,6 @@ import com.example.nhs.member.service.MemberService;
 import com.example.nhs.member.service.dto.AddMemberRequest;
 import com.example.nhs.member.service.dto.SignInMemberRequest;
 import com.example.nhs.member.service.dto.SignInMemberResponse;
-import com.example.nhs.token.repository.RefreshTokenRepository;
 import com.example.nhs.token.service.RefreshTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,9 +32,7 @@ import java.time.Duration;
 @RestController
 @Slf4j
 public class MemberController {
-    private final RefreshTokenRepository refreshTokenRepository;
     private final MemberService memberService;
-    private final JwtProperties jwtProperties;
     private final TokenProvider tokenProvider;
     private final RefreshTokenService refreshTokenService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -44,7 +40,6 @@ public class MemberController {
 
     @PostMapping("/test")
     public String testSignin(@RequestBody TestInputIn testInputIn) {
-
         log.info("test method 실행");
         log.info("testInputIn === {}", testInputIn);
         return "test success";
@@ -94,6 +89,8 @@ public class MemberController {
         Authentication authentication = tokenProvider.getAuthentication(generatedToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return ResponseEntity.ok()
+                .header("accessToken", generatedToken)
+                .header("refreshToken", generatedRefreshToken)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + generatedToken)
                 .build();
     }

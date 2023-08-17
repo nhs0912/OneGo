@@ -20,11 +20,17 @@ const submitForm = function() {
   axios.post("http://localhost:8888/signin", {
     employeeId: ruleForm.id,
     password: ruleForm.password
-  }).then(function(response) {
-    console.log("login success" + response);
+  }).then((response) => {
+    console.log("login success {}" , response);
+    let accessToken = response ? response.headers.authorization : undefined;
+    let refreshToken = response ? response.headers.refreshtoken : undefined;
+    localStorage.setItem("Authorization",accessToken);
+    localStorage.setItem("refreshToken",refreshToken);
+    console.log("login accessToken {}" , accessToken);
+    console.log("login refreshToken {}" , refreshToken);
     goWriteView();
   }).catch(function(error) {
-    console.log("login error " + error);
+    console.log("login error {}", error);
   });
 };
 const signup = function() {

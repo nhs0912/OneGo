@@ -5,13 +5,22 @@ import axios from "axios";
 
 const title = ref("");
 const content = ref("");
+
+axios.interceptors.request.use(function(config){
+  console.log("localStorage.getItem('Authorization')==== "+ localStorage.getItem('Authorization'))
+  config.headers['Authorization'] = localStorage.getItem('Authorization');
+  return config;
+}, function(error){
+  return Promise.reject(error);
+});
+
 const write = function(){
   console.log(title.value , content.value)
   // axios.get("http://localhost:8080/write");
   axios.post("http://localhost:8888/test",{
     title : title.value,
     content: content.value
-  }).then(function(response){
+  } ).then(function(response){
     console.log("write success " + response);
   }).catch(function(error){
     console.log("write error " + error)
