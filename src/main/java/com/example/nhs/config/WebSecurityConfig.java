@@ -60,7 +60,7 @@ public class WebSecurityConfig {
 
     //인증 관리자 관련 설정
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, MemberDetailService memberDetailService) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(memberService) //사용자 정보 서비스 설정
                 .passwordEncoder(bCryptPasswordEncoder)

@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ public class TokenProviderTest {
                 .employeeId("MT01763")
                 .password("1234")
                 .name("노희석")
+                .createdDate(LocalDateTime.now())
                 .build()
         );
 
@@ -101,7 +103,7 @@ public class TokenProviderTest {
 
     @DisplayName("getUserId(): 토큰으로 유저 ID를 가져올 수 있다.")
     @Test
-    void getUserId(){
+    void getUserId() {
         //given
         Long userId = 1L;
         String token = JwtFactory.builder()
