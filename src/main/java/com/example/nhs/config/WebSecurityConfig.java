@@ -33,8 +33,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
-                .requestMatchers(toH2Console())
-                .requestMatchers("/static/**");
+                .requestMatchers(toH2Console());
     }
 
     //특정 HTTP 요청에 대한 웹 기반 보안 구성
@@ -43,7 +42,7 @@ public class WebSecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests()// 인증, 인가 설정
-                .requestMatchers("/posts", "/signup", "/member", "/signin").permitAll()
+                .requestMatchers("/posts", "/signup", "/member", "/signin", "/static/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()

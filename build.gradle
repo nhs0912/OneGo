@@ -42,6 +42,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+//서브 모듈에 있는 yml 파일들을 빌드 시에 가져오기
 task copyPrivate(type: Copy){
 	copy{
 		from './submodule_OneGo'
