@@ -60,6 +60,8 @@ public class MemberController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler()

@@ -83,7 +83,6 @@ public class WebSecurityConfig {
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
         configuration.addExposedHeader("Authorization");
-        configuration.addExposedHeader("accessToken");
         configuration.addExposedHeader("refreshToken");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
