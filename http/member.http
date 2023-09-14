@@ -7,5 +7,17 @@ Content-Type: application/json
 "password":"test"
 }
 
+### 2. 회원가입
+# @no-redirect
+POST http://localhost:8888/signup
+Content-Type: application/json
+{
+"employeeId" : "test2",
+"memberRole":"02",
+"password":"test",
+"name":"test2",
+"teamId":"01"
+}
+
 ### 관리자 로그인
 POST http://localhost:8888/admin

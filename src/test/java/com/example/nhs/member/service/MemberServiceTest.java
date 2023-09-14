@@ -3,7 +3,7 @@ package com.example.nhs.member.service;
 import com.example.nhs.member.domain.Member;
 import com.example.nhs.member.enums.MemberRole;
 import com.example.nhs.member.repository.MemberRepository;
-import com.example.nhs.member.service.dto.AddMemberRequest;
+import com.example.nhs.member.service.dto.MemberSaveServiceRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ class MemberServiceTest {
     }
 
     private Long makeMember() {
-        return memberService.save(AddMemberRequest.builder()
+        return memberService.save(MemberSaveServiceRequest.builder()
                 .employeeId("MT01763")
                 .name("HEESEOK")
                 .password("1234")

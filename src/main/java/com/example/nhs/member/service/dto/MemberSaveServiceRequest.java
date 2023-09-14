@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
-public class AddMemberRequest {
+public class MemberSaveServiceRequest {
     private String employeeId;
     private String password;
     private String name;

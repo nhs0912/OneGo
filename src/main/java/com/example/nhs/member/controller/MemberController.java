@@ -1,12 +1,13 @@
 package com.example.nhs.member.controller;
 
 import com.example.nhs.config.jwt.TokenProvider;
+import com.example.nhs.member.controller.dto.SignUpRequest;
+import com.example.nhs.member.controller.dto.SignUpResponse;
 import com.example.nhs.member.controller.dto.TestInputIn;
 import com.example.nhs.member.domain.Member;
 import com.example.nhs.member.service.MemberService;
-import com.example.nhs.member.service.dto.AddMemberRequest;
-import com.example.nhs.member.service.dto.SignInMemberRequest;
-import com.example.nhs.member.service.dto.SignInMemberResponse;
+import com.example.nhs.member.service.dto.MemberSignInServiceRequest;
+import com.example.nhs.member.service.dto.MemberSignInServiceResponse;
 import com.example.nhs.token.service.RefreshTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,15 +48,16 @@ public class MemberController {
 
     @PostMapping("/member")
     @Transactional
-    public String signUp(@RequestBody AddMemberRequest request) {
+    public ResponseEntity<SignUpResponse> signUp(@RequestBody SignUpRequest request) {
         log.info("request ====== {} ", request);
 //        Member member = memberService.findByEmployeeId(request.getEmployeeId());
 //
 //        if(member != null){
 //                throw new IllegalArgumentException("이미 가입되어있는 회원입니다.");
 //        }
-        memberService.save(request);
-        return HttpStatus.OK.toString();
+        Long savedId = memberService.save(request.toMemberSaveServiceRequest());
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/logout")
@@ -68,7 +70,7 @@ public class MemberController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<SignInMemberResponse> signin(@RequestBody SignInMemberRequest request) {
+    public ResponseEntity<MemberSignInServiceResponse> signin(@RequestBody MemberSignInServiceRequest request) {
         log.info("signin request ====== {} ", request);
         Member member = memberService.findByEmployeeId(request.getEmployeeId());
 
@@ -80,7 +82,7 @@ public class MemberController {
         String generatedRefreshToken = tokenProvider.generateRefreshToken(member, Duration.ofHours(24));
         refreshTokenService.saveRefreshToken(member.getId(), generatedRefreshToken);
 
-        SignInMemberResponse signInMemberResponse = SignInMemberResponse.builder()
+        MemberSignInServiceResponse signInMemberResponse = MemberSignInServiceResponse.builder()
                 .token(generatedToken)
                 .refreshToken(generatedRefreshToken)
                 .build();
@@ -89,7 +91,6 @@ public class MemberController {
         Authentication authentication = tokenProvider.getAuthentication(generatedToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return ResponseEntity.ok()
-                .header("accessToken", generatedToken)
                 .header("refreshToken", generatedRefreshToken)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + generatedToken)
                 .build();
