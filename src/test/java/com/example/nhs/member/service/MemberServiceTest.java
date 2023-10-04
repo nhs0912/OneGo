@@ -4,6 +4,7 @@ import com.example.nhs.member.domain.Member;
 import com.example.nhs.member.enums.MemberRole;
 import com.example.nhs.member.repository.MemberRepository;
 import com.example.nhs.member.service.dto.MemberSaveServiceRequest;
+import com.example.nhs.team.enums.TeamKind;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ class MemberServiceTest {
                 .name("HEESEOK")
                 .password("1234")
                 .memberRole(MemberRole.MEMBER.code())
-                .teamId(1L)
+                .teamId(TeamKind.FO.code())
                 .build());
     }
 }

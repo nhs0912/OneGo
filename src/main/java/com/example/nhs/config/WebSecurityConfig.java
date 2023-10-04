@@ -25,6 +25,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 
 @RequiredArgsConstructor
 @Configuration
+//로그인 여부를 판별하기 위해 @PreAuthorize Annotation을 사용하기 위해 필요하다.
 @EnableMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
     private static final String URL_ADDRESS = "http://localhost:5000";

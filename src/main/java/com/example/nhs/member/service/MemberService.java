@@ -5,6 +5,8 @@ import com.example.nhs.member.enums.MemberRole;
 import com.example.nhs.member.enums.MemberStatus;
 import com.example.nhs.member.repository.MemberRepository;
 import com.example.nhs.member.service.dto.MemberSaveServiceRequest;
+import com.example.nhs.team.enums.TeamKind;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,14 +21,15 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Transactional
     public Long save(MemberSaveServiceRequest dto) {
-        log.info("dto info = { }", dto.toString());
+        log.info("dto info = {}", dto);
         return memberRepository.save(Member.builder()
                 .employeeId(dto.getEmployeeId())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .status(MemberStatus.NORMAL)
-                .teamId(dto.getTeamId())
+                .teamId(TeamKind.valueFrom(dto.getTeamId()).code())
                 .role(MemberRole.valueFrom(dto.getMemberRole()))
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
