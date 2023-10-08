@@ -28,23 +28,32 @@ const write = function(){
 
 }
 
+ const editor =  new Editor({
+    el: document.querySelector('#editor'),
+    height: '500px',
+    initialEditType: 'markdown',
+    previewStyle: 'vertical'
+  });
+
+
 
 </script>
 <template>
   <h1>글작성</h1>
-    <el-input
-      v-model="title"
-      autosize
-      type="textarea"
-      placeholder="제목을 입력해주세요."
-    />
-    <div style="margin: 20px 0" />
-    <el-input
-      v-model="content"
-      :autosize="{ minRows: 5, maxRows: 15 }"
-      type="textarea"
-      placeholder="Please input"
-    />
+<!--    <el-input-->
+<!--      v-model="title"-->
+<!--      autosize-->
+<!--      type="textarea"-->
+<!--      placeholder="제목을 입력해주세요."-->
+<!--    />-->
+<!--    <div style="margin: 20px 0" />-->
+<!--    <el-input-->
+<!--      v-model="content"-->
+<!--      :autosize="{ minRows: 5, maxRows: 15 }"-->
+<!--      type="textarea"-->
+<!--      placeholder="Please input"-->
+<!--    />-->
+  <div id="editor"></div>
   <div class="mt-2">
     <div class="d-flex justify-content-end">
       <el-button type="primary" @click="write()">저장</el-button>

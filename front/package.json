@@ -12,6 +12,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@toast-ui/editor": "^3.2.2",
+    "@toast-ui/editor-plugin-code-syntax-highlight": "^3.1.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
     "element-plus": "^2.3.7",

@@ -10,7 +10,9 @@
   ],
   "compilerOptions": {
     // ...
-    "types": ["element-plus/global"]
+    "types": ["element-plus/global"],
+    "noImplicitAny": false,
+    "allowJs": true
   },
 
 }
