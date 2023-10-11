@@ -2,9 +2,7 @@
 import { ref, reactive } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
-// import type { FormInstance } from "element-plus";
-// import { reactive } from "vue/dist/vue";
-import type { FormRules } from "element-plus";
+import type FormRules from "element-plus";
 
 const checked = ref(false);
 const route = useRouter();
