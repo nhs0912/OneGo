@@ -3,6 +3,7 @@ package com.example.nhs.config.jwt;
 import com.example.nhs.member.domain.Member;
 import com.example.nhs.member.repository.MemberRepository;
 import io.jsonwebtoken.Jwts;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,10 @@ public class TokenProviderTest {
     @Autowired
     private JwtProperties jwtProperties;
 
+    @BeforeEach
+    void beforeEach() {
+        memberRepository.deleteAll();
+    }
     //generateToken() 검증 테스트
     @DisplayName("generateToken() : 유저 정보와 만료 기간을 전달해 토큰을 만들 수 있다.")
     @Test

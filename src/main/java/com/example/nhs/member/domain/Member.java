@@ -27,7 +27,7 @@ public class Member extends BaseEntity implements UserDetails {
     private Long id;
 
     @Column(name = "employee_id", nullable = false, unique = true)
-    String employeeId;
+    private String employeeId;
 
     @Column(name = "email", nullable = true, unique = true)
     private String email;
@@ -52,14 +52,11 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(name = "team_id")
     private Long teamId;
 
-
     public Member(String employeeId, String password, String name) {
         this.employeeId = employeeId;
         this.password = password;
         this.name = name;
-
     }
-
 
     public Member(String employeeId, String password, String name, String grade, MemberRole role, MemberStatus status, Long teamId) {
         this(employeeId, password, name);
@@ -67,6 +64,7 @@ public class Member extends BaseEntity implements UserDetails {
         this.grade = grade;
         this.email = email;
         this.status = status;
+        this.teamId = teamId;
     }
 
     @Override
