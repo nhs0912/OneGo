@@ -10,13 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Github Repository file 불러오기 
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Setup nodejs
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Install packages
-        run: npm install
+      - name: Install packages        
+        run: cd /home/runner/work/OneGo/onego_front/package.json && npm install
+        
       - name: Build Vue application
         run: npm run build
