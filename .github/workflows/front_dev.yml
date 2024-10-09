@@ -7,7 +7,7 @@ on:
       # steps에 대한 기본 작업 디렉토리 설정
 defaults:
   run:
-    working-directory: ./onego-front
+    working-directory: /onego-front
     
 jobs:
   build:  
@@ -31,7 +31,7 @@ jobs:
         
       - name: Build Vue application
         run: npm run build
-
+  
   docker:
     needs: build
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
        # Docker 이미지 빌드
       - name: Docker Image Build
         run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }} .
-
+        
         # DockerHub Push
       - name: DockerHub Push
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
