@@ -21,15 +21,11 @@ jobs:
         with:
           node-version: "20"
           #cache: npm # setup-node 의 캐시 기능을 사용함 (저는 npm을 사용하므로 npm을 썼습니다. -> 본인의 세팅에 맞춰서 변경해야 합니다.)
-          cache-dependency-path: onego-front/package-lock.json # 캐시 기능
-          
+          cache-dependency-path: onego-front/package-lock.json # 캐시 기능          
           
       - name: 현재 폴더 나타내기
         run: pwd
-
-      - name: 폴더이동하기 
-        run: cd ./onego-front/
-        
+      
       - name: Install packages        
         run: npm install
         
