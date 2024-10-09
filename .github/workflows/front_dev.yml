@@ -36,7 +36,7 @@ jobs:
     needs: build    
     runs-on: ubuntu-latest
     env:
-      working-directory: ./onego-front
+      working-directory: onego-front
     steps:
       # DockerHub 로그인
       - name: DockerHub Login
