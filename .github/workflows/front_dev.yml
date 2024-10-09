@@ -38,6 +38,9 @@ jobs:
     env:
       working-directory: ./onego-front/
     steps:      
+      - name: 현재 폴더 나타내기
+        run: pwd      
+      
       - name: show me the checkout folder Info 
         run: ls -al
         
