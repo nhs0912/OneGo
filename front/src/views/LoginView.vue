@@ -1,139 +1,85 @@
 <template>
-  <el-form
-    ref="ruleFormRef"
-    :model="ruleForm"
-    status-icon
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-  >
+  <div>
+    <v-img
+        class="mx-auto my-6"
+        max-width="228"
+        src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"
+    ></v-img>
 
-    <el-form-item label="id" prop="id">
-      <el-input v-model="ruleForm.id" type="text" autocomplete="off" />
-    </el-form-item>
-    <el-form-item label="Password" prop="pass">
-      <el-input v-model="ruleForm.pass" type="password" autocomplete="off" />
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submitForm(ruleFormRef)">SignIn</el-button>
-      <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
-      <el-button type="success" @click="signup()">SignUp</el-button>
-    </el-form-item>
-  </el-form>
+    <v-card
+        class="mx-auto pa-12 pb-8"
+        elevation="8"
+        max-width="448"
+        rounded="lg"
+    >
+      <div class="text-subtitle-1 text-medium-emphasis">Account</div>
+
+      <v-text-field
+          density="compact"
+          placeholder="Email address"
+          prepend-inner-icon="mdi-email-outline"
+          variant="outlined"
+      ></v-text-field>
+
+      <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+        Password
+
+        <a
+            class="text-caption text-decoration-none text-blue"
+            href="#"
+            rel="noopener noreferrer"
+            target="_blank"
+        >
+          Forgot login password?</a>
+      </div>
+
+      <v-text-field
+          :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="visible ? 'text' : 'password'"
+          density="compact"
+          placeholder="Enter your password"
+          prepend-inner-icon="mdi-lock-outline"
+          variant="outlined"
+          @click:append-inner="visible = !visible"
+      ></v-text-field>
+
+      <v-card
+          class="mb-12"
+          color="surface-variant"
+          variant="tonal"
+      >
+<!--        <v-card-text class="text-medium-emphasis text-caption">-->
+<!--          Warning: After 3 consecutive failed login attempts, you account will be temporarily locked for three hours. If you must login now, you can also click "Forgot login password?" below to reset the login password.-->
+<!--        </v-card-text>-->
+      </v-card>
+
+      <v-btn
+          class="mb-8"
+          color="blue"
+          size="large"
+          variant="tonal"
+          block
+      >
+        Log In
+      </v-btn>
+
+      <v-card-text class="text-center">
+        <a
+            class="text-blue text-decoration-none"
+            href="/signup"
+            rel="noopener noreferrer"
+            target="_blank"
+        >
+          Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
+        </a>
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
-
-<script lang="ts" setup>
-import { reactive, ref } from "vue";
-import type {FormInstance} from "element-plus";
-import type {FormRules } from 'element-plus';
-import { useRouter } from "vue-router";
-import axios from "axios";
-
-const ruleFormRef = ref<FormInstance>();
-
-const route = useRouter();
-const signup = function() {
-  route.push({
-    path: "/signup"
-  });
-};
-
-const goWriteView = function() {
-  route.push(({
-    path:"/write"
-  }));
-};
-const checkId = (rule: any, value: any, callback: any) => {
-  if (!value) {
-    return callback(new Error("Please input the Id"));
-  }
-  setTimeout(() => {
-    if (!Number.isInteger(value)) {
-      callback(new Error("Please input digits"));
-    } else {
-      if (value.length < 6) {
-        callback(new Error("The length of id must be greater than 6"));
-      } else {
-        callback();
-      }
-    }
-  }, 1000);
-};
-
-const checkPw = (rule: any, value: any, callback: any) => {
-  if (!value) {
-    return callback(new Error("Please input the password2"));
-  }
-  setTimeout(() => {
-    if (!Number.isInteger(value)) {
-      callback(new Error("Please input digits"));
-    } else {
-      if (value.length < 6) {
-        callback(new Error("The length of id must be greater than 6"));
-      } else {
-        callback();
-      }
-    }
-  }, 1000);
-};
-
-const validateId = (rule: any, value: any, callback: any) => {
-  if (value === "") {
-    callback(new Error("Please input the id"));
-  } else {
-    if (ruleForm.id !== "") {
-      if (!ruleFormRef.value) return;
-      ruleFormRef.value.validateField("checkId", () => null);
-    }
-    callback();
-  }
-};
-const validatePass = (rule: any, value: any, callback: any) => {
-  if (value === "") {
-    callback(new Error("Please input the password"));
-  } else {
-    if (ruleForm.pass !== "") {
-      if (!ruleFormRef.value) return;
-      ruleFormRef.value.validateField("checkPw", () => null);
-    }
-    callback();
-  }
-};
-
-const ruleForm = reactive({
-  pass: "",
-  id: ""
-});
-
-const rules = reactive<FormRules<typeof ruleForm>>({
-  pass: [{ validator: validatePass, trigger: "blur" }],
-  id: [{ validator: validateId, trigger: "blur" }]
-});
-
-const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.validate((valid) => {
-    if (valid) {
-      axios.post("http://localhost:8888/signin", {
-        employeeId: ruleForm.id,
-        password: ruleForm.pass
-      }).then(function(response){
-        console.log("login success")
-        goWriteView();
-      }).catch(function(error){
-        console.log("login error")
-      });
-
-
-    } else {
-      console.log("error submit!");
-      return false;
-    }
-  });
-};
-
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.resetFields();
-};
+<script>
+export default {
+  data: () => ({
+    visible: false,
+  }),
+}
 </script>

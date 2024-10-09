@@ -56,7 +56,7 @@ const write = function(){
   <div id="editor"></div>
   <div class="mt-2">
     <div class="d-flex justify-content-end">
-      <el-button type="primary" @click="write()">저장</el-button>
+      <button type="primary" @click="write()">저장</button>
     </div>
   </div>
 
