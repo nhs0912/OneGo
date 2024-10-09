@@ -45,4 +45,4 @@ jobs:
 
         # DockerHub Push
       - name: DockerHub Push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
