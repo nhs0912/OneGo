@@ -16,8 +16,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - name: 현재 폴더 나타내기
+        run: pwd
+
+      - name: 폴더이동하기 
+        run: cd /home/runner/work/OneGo/onego-front/
+        
       - name: Install packages        
-        run: cd /home/runner/work/OneGo/onego-front/ && npm install
+        run: npm install
         
       - name: Build Vue application
         run: npm run build
