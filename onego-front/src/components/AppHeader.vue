@@ -10,7 +10,7 @@ function toggleTheme() {
 
 <template>
   <v-toolbar flat>
-    <v-toolbar-title>OneGo</v-toolbar-title>
+    <v-toolbar-title>OneGo Project</v-toolbar-title>
     <v-spacer></v-spacer>
       <!-- button uses dark theme -->
       <v-btn icon id="mode-switcher" @click="toggleTheme">
