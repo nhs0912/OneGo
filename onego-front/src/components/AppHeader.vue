@@ -14,7 +14,7 @@ function toggleTheme() {
     <v-spacer></v-spacer>
       <!-- button uses dark theme -->
       <v-btn icon id="mode-switcher" @click="toggleTheme">
-        <v-icon :color="($vuetify.theme.dark) ? 'primary' : 'primary lighten-4'">
+        <v-icon :color="(theme.global.current.value.dark) ? 'primary' : 'primary lighten-4'">
           {{ (theme.global.current.value.dark) ? 'mdi-weather-night' : 'mdi-weather-sunny' }}
         </v-icon>
 
