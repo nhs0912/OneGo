@@ -12,15 +12,13 @@ defaults:
 jobs:
   build:  
     runs-on: ubuntu-latest
-    steps:      
-      - name: show me the checkout folder path 
-        run: ls -al
-      
+    steps:                  
       - name: Github Repository file 불러오기 
         uses: actions/checkout@v4
 
       - name: show me the checkout folder Info 
         run: ls -al
+        working-directory: ../
       
       - name: Setup nodejs
         uses: actions/setup-node@v4
