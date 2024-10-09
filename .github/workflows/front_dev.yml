@@ -35,12 +35,19 @@ jobs:
   build:  
     needs: pull
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./onego-front/
     steps:      
+      - name: show me the checkout folder Info 
+        run: ls -al
+        
       - name: Install packages        
         run: npm install
+        working-directory: ${{ env.working-directory }}
         
       - name: Build Vue application
         run: npm run build
+        working-directory: ${{ env.working-directory }}
   
   docker:  
     needs: build    
