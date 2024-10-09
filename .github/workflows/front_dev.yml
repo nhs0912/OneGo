@@ -12,10 +12,7 @@ defaults:
 jobs:
   pull:  
     runs-on: ubuntu-latest
-    steps:
-      - name: show me the checkout folder path 
-      - run: ls -al
-      
+    steps:      
       - name: Github Repository file 불러오기 
         uses: actions/checkout@v4
 
