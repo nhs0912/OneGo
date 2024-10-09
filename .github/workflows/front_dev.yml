@@ -20,7 +20,7 @@ jobs:
         run: pwd
 
       - name: 폴더이동하기 
-        run: cd /home/runner/work/OneGo/onego-front/
+        run: cd ./onego-front/
         
       - name: Install packages        
         run: npm install
