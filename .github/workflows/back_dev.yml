@@ -66,7 +66,7 @@ jobs:
             sudo docker rm -f ${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
             sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}            
 
-            sudo docker run -d -p ${{ secrets.FRONT_PORT }}:${{ secrets.FRONT_PORT }} --name ${{ secrets.DOCKER_HUB_ONEGO_BACK }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+            sudo docker run -d -p ${{ secrets.BACK_PORT }}:${{ secrets.BACK_PORT }} --name ${{ secrets.DOCKER_HUB_ONEGO_BACK }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}
 
             sudo docker logs ${{ secrets.DOCKER_HUB_ONEGO_BACK }}
 
