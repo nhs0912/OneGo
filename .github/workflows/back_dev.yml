@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - back_dev
+      - main
     
 defaults:
   run:
@@ -12,16 +13,32 @@ defaults:
 jobs:
   build:  
     runs-on: ubuntu-latest
-    steps:                  
+    steps:  
+      
       - name: Github Repository file 불러오기 
         uses: actions/checkout@v4
-
+        with:
+          submodules: true
+          token: ${{ secrets.DOCKER_HUB_PASSWORD }}
+       
       - name: show me the checkout folder Info 
         run: ls -al
         working-directory: ../
       
       # spring boot 
-      
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+      # uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+      # with:
+        # arguments: build
+        run : ./gradlew clean build --exclude-task test
       
       # DockerHub 로그인
       - name: DockerHub Login
