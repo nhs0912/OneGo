@@ -1,6 +1,8 @@
 name: Deploy To oracle_serverA_back
 
 on:
+  # 수동배포
+  workflow_dispatch:
   push:
     branches:
       - back_dev
@@ -29,10 +31,7 @@ jobs:
           distribution: 'temurin'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-      # uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-      # with:
-        # arguments: build
+      - name: Build with Gradle     
         run : ./gradlew clean build --exclude-task test
       
       # DockerHub 로그인
