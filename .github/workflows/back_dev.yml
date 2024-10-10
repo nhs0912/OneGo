@@ -1,4 +1,4 @@
-name: Deploy To oracle_serverA_front
+name: Deploy To oracle_serverA_back
 
 on:
   push:
