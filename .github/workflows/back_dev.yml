@@ -4,22 +4,17 @@ on:
   push:
     branches:
       - back_dev
-      - main
-    
-defaults:
-  run:
-    working-directory: ./
-    
+      - main    
+      
 jobs:
   build:  
     runs-on: ubuntu-latest
-    steps:  
-      
+    steps:        
       - name: Github Repository file 불러오기 
         uses: actions/checkout@v4
         with:
           submodules: true
-          token: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          token: ${{ secrets.GIT_TOKEN }}
        
       - name: show me the checkout folder Info 
         run: ls -al
