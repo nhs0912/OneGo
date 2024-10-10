@@ -1,0 +1,64 @@
+name: Deploy To oracle_serverA_front
+
+on:
+  push:
+    branches:
+      - back_dev
+    
+defaults:
+  run:
+    working-directory: ./
+    
+jobs:
+  build:  
+    runs-on: ubuntu-latest
+    steps:                  
+      - name: Github Repository file 불러오기 
+        uses: actions/checkout@v4
+
+      - name: show me the checkout folder Info 
+        run: ls -al
+        working-directory: ../
+      
+      # spring boot 
+      
+      
+      # DockerHub 로그인
+      - name: DockerHub Login
+        uses: docker/login-action@v2
+        with:
+            username: ${{ secrets.DOCKER_HUB_USERNAME }}
+            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+       # Docker 이미지 빌드
+      - name: Docker Image Build
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }} .        
+        
+        # DockerHub Push
+      - name: DockerHub Push
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK}}       
+
+  server_deploy:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+      - name: server접속 및 Application Run
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.ORACLE_SERVER_A_IP }}
+          username: ${{ secrets.ORACLE_SERVER_A_USER }}
+          key: ${{ secrets.ORACLE_SERVER_A_PRIVATE_KEY }}
+          script: |
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+            sudo docker stop ${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
+            sudo docker rm -f ${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
+            sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}            
+
+            sudo docker run -d -p ${{ secrets.FRONT_PORT }}:${{ secrets.FRONT_PORT }} --name ${{ secrets.DOCKER_HUB_ONEGO_BACK }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+
+            sudo docker logs ${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+
+
+# -e SPRING_DATASOURCE_URL=${{ secrets.DB_URL }} \
+# -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
+# -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \
