@@ -62,8 +62,8 @@ jobs:
           key: ${{ secrets.ORACLE_SERVER_A_PRIVATE_KEY }}
           script: |
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}
-            sudo docker stop ${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
-            sudo docker rm -f ${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
+            sudo docker stop ${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+            sudo docker rm -f ${{ secrets.DOCKER_HUB_ONEGO_BACK }}
             sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}            
 
             sudo docker run -d -p ${{ secrets.BACK_PORT }}:${{ secrets.BACK_PORT }} --name ${{ secrets.DOCKER_HUB_ONEGO_BACK }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}
