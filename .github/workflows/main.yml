@@ -98,6 +98,7 @@ jobs:
 
 
   back_build:    
+    needs: front_server_deploy
     runs-on: ubuntu-latest
     steps:        
       - name: Github Repository file 불러오기 
