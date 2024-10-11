@@ -1,7 +1,4 @@
 name: Deploy to Oracle_serverA_All
-defaults:
-  run:
-      working-directory: ./onego-front
 
 on:
   #수동배포
@@ -24,7 +21,11 @@ jobs:
         
       - name: show me the checkout folder Info 
         run: ls -al
-        working-directory: ../
+        working-directory: ${{ env.front-working-directory }}
+
+      - name: show me the checkout folder path 
+        run: pwd
+        working-directory: ${{ env.front-working-directory }}      
       
       - name: Setup nodejs
         uses: actions/setup-node@v4
