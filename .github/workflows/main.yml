@@ -1,0 +1,175 @@
+name: Deploy to Oracle_serverA_All
+
+
+on:
+  #수동배포
+  workflow_dispatch:
+  push:
+    branches:
+      - main  
+    
+jobs:
+  front_build:         
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./onego-front
+    steps:                  
+      - name: Github Repository file 불러오기 
+        uses: actions/checkout@v4.2.1
+        with:
+          working-directory: ./onego-front
+        
+      - name: show me the checkout folder Info 
+        run: ls -al
+        working-directory: ../
+      
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          #cache: npm # setup-node 의 캐시 기능을 사용함 (저는 npm을 사용하므로 npm을 썼습니다. -> 본인의 세팅에 맞춰서 변경해야 합니다.)
+          cache-dependency-path: onego-front/package-lock.json # 캐시 기능                              
+          working-directory: ./onego-front
+          
+      - name: show me the checkout folder Info 
+        run: ls -al
+        
+      - name: Install packages        
+        run: npm install           
+        working-directory: ./onego-front
+        
+      - name: Build Vue application
+        run: npm run build  
+        working-directory: ./onego-front
+
+      - name: Docker Setup Buildx
+        # You may pin to the exact commit or the version.
+        # uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349
+        uses: docker/setup-buildx-action@v3.7.1
+        with:
+          working-directory: ./onego-front
+      # DockerHub 로그인
+      - name: DockerHub Login
+        uses: docker/login-action@v3.3.0
+        with:
+            username: ${{ secrets.DOCKER_HUB_USERNAME }}
+            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      
+      #Docker Build and push
+      - name: Docker Build and push
+        uses: docker/build-push-action@v6.9.0 # build-push-action 사용
+        with:
+          working-directory: ./onego-front
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}:${{ secrets.FRONT_VERSION }}
+          cache-from: type=gha # 여기서 gha 는 Guthub Actions 용 캐시를 의미합니다.
+          cache-to: type=gha,mode=max
+       # Docker 이미지 빌드
+      #- name: Docker Image Build
+      #  run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }} .        
+        
+        # DockerHub Push
+      #- name: DockerHub Push
+      #  run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}       
+
+  front_server_deploy:
+      needs: front_build
+      runs-on: ubuntu-latest
+      env:
+        working-directory: ./onego-front
+      steps:
+      - name: server접속 및 Application Run
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          working-directory: ./onego-front
+          host: ${{ secrets.ORACLE_SERVER_A_IP }}
+          username: ${{ secrets.ORACLE_SERVER_A_USER }}
+          key: ${{ secrets.ORACLE_SERVER_A_PRIVATE_KEY }}
+          script: |
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
+            sudo docker stop ${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
+            sudo docker rm -f ${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
+            sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}            
+
+            sudo docker run -d -p ${{ secrets.FRONT_PORT }}:${{ secrets.FRONT_PORT }} --name ${{ secrets.DOCKER_HUB_ONEGO_FRONT }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
+
+            sudo docker logs ${{ secrets.DOCKER_HUB_ONEGO_FRONT }}
+
+
+  back_build:    
+    runs-on: ubuntu-latest
+    steps:        
+      - name: Github Repository file 불러오기 
+        uses: actions/checkout@v4.2.1
+        with:
+          submodules: true
+          token: ${{ secrets.GIT_TOKEN }}
+       
+      - name: show me the checkout folder Info 
+        run: ls -al
+        working-directory: ../
+      
+      # spring boot 
+      #- uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4.4.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      
+      - name: Build with Gradle     
+        run : ./gradlew clean build --exclude-task test
+    
+      - name: Docker Setup Buildx
+        # You may pin to the exact commit or the version.
+        # uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349
+        uses: docker/setup-buildx-action@v3.7.1
+      # DockerHub 로그인
+      - name: DockerHub Login
+        uses: docker/login-action@v3.3.0
+        with:
+            username: ${{ secrets.DOCKER_HUB_USERNAME }}
+            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      #Docker Build and push
+      - name: Docker Build and push
+        uses: docker/build-push-action@v6.9.0 # build-push-action 사용
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}:${{ secrets.BACK_VERSION }}
+          cache-from: type=gha # 여기서 gha 는 Guthub Actions 용 캐시를 의미합니다.
+          cache-to: type=gha,mode=max
+
+      # Docker 이미지 빌드      
+      #- name: Docker Image Build
+      #  run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }} .        
+        
+        # DockerHub Push
+      #- name: DockerHub Push
+      #  run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK}}       
+
+  back_server_deploy:
+      needs: back_build
+      runs-on: ubuntu-latest
+      steps:
+      - name: server접속 및 Application Run
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ORACLE_SERVER_A_IP }}
+          username: ${{ secrets.ORACLE_SERVER_A_USER }}
+          key: ${{ secrets.ORACLE_SERVER_A_PRIVATE_KEY }}
+          script: |
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+            sudo docker stop ${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+            sudo docker rm -f ${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+            sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}            
+
+            sudo docker run -d -p ${{ secrets.BACK_PORT }}:${{ secrets.BACK_PORT }} --name ${{ secrets.DOCKER_HUB_ONEGO_BACK }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+
+            sudo docker logs ${{ secrets.DOCKER_HUB_ONEGO_BACK }}
+
