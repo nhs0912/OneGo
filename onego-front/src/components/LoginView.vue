@@ -64,11 +64,10 @@
       </v-btn>
 
       <v-card-text class="text-center">
-        <router-link to="{name : 'signupView' }">
+        <router-link to='testView'>
         <a
           class="text-blue text-decoration-none"
           rel="noopener noreferrer"
-          target="_blank"
         >
           Sign up now
           <v-icon icon="mdi-chevron-right"></v-icon>
@@ -80,14 +79,11 @@
 </template>
 <script>
 
-// import component from "*.vue";
+import TestView from './TestView.vue'
 
-const routes = [{
-  path: '/signupView',
-  name: 'signupView',
-  component: () => import('./SignUpView.vue')
+const routes = {
+ '/testView' : TestView
 }
-];
 
 
 export default {
