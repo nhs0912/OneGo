@@ -64,7 +64,7 @@
       </v-btn>
 
       <v-card-text class="text-center">
-        <router-link to='/signupView'>
+        <router-link to='/login/signupView'>
           <a
             class="text-blue text-decoration-none"
             rel="noopener noreferrer"
