@@ -64,19 +64,32 @@
       </v-btn>
 
       <v-card-text class="text-center">
+        <router-link to="{name : 'signupView' }">
         <a
           class="text-blue text-decoration-none"
-          href="/signup"
           rel="noopener noreferrer"
           target="_blank"
         >
-          Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
+          Sign up now
+          <v-icon icon="mdi-chevron-right"></v-icon>
         </a>
+        </router-link>
       </v-card-text>
     </v-card>
   </div>
 </template>
 <script>
+
+// import component from "*.vue";
+
+const routes = [{
+  path: '/signupView',
+  name: 'signupView',
+  component: () => import('./SignUpView.vue')
+}
+];
+
+
 export default {
   data: () => ({
     visible: false,
