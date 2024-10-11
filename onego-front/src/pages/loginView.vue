@@ -64,26 +64,20 @@
       </v-btn>
 
       <v-card-text class="text-center">
-        <router-link to='testView'>
-        <a
-          class="text-blue text-decoration-none"
-          rel="noopener noreferrer"
-        >
-          Sign up now
-          <v-icon icon="mdi-chevron-right"></v-icon>
-        </a>
+        <router-link to='/signupView'>
+          <a
+            class="text-blue text-decoration-none"
+            rel="noopener noreferrer"
+          >
+            Sign up now
+            <v-icon icon="mdi-chevron-right"></v-icon>
+          </a>
         </router-link>
       </v-card-text>
     </v-card>
   </div>
 </template>
 <script>
-
-import TestView from './TestView.vue'
-
-const routes = {
- '/testView' : TestView
-}
 
 
 export default {
