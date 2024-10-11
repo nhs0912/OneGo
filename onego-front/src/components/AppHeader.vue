@@ -29,7 +29,7 @@ function toggleTheme() {
     </v-btn>
 
     <v-btn icon>
-      <router-link class="custom-link" to="/appheader/loginView">
+      <router-link class="custom-link" to="/appheader/boardView">
         <v-icon>mdi-heart</v-icon>
       </router-link>
 

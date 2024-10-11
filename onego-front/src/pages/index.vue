@@ -1,7 +1,6 @@
 <template>
-  <router-view/>
+  <LoginView/>
 </template>
-
 <script lang="ts" setup>
-  //
+
 </script>
