@@ -9,12 +9,6 @@ function toggleTheme() {
 </script>
 
 <template>
-  <!--  <v-card-->
-  <!--      color="grey-lighten-4"-->
-  <!--      height="200px"-->
-  <!--      rounded="0"-->
-  <!--      flat-->
-  <!--  >-->
   <v-toolbar
     dark
     prominent
