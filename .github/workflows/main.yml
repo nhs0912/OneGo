@@ -60,21 +60,21 @@ jobs:
       - name: Docker Build and push
         uses: docker/build-push-action@v6.9.0 # build-push-action 사용
           
-        with:                  
-          working-directory: ${{ env.front-working-directory }}
-          context: .          
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}:${{ secrets.FRONT_VERSION }}
-          cache-from: type=gha # 여기서 gha 는 Guthub Actions 용 캐시를 의미합니다.
-          cache-to: type=gha,mode=max
+       # with:                  
+       #   working-directory: ${{ env.front-working-directory }}
+       #   context: .          
+       #   push: true
+       #   tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}:${{ secrets.FRONT_VERSION }}
+       #   cache-from: type=gha # 여기서 gha 는 Guthub Actions 용 캐시를 의미합니다.
+       #   cache-to: type=gha,mode=max
        # Docker 이미지 빌드
-      #- name: Docker Image Build
-      #  run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }} .        
+      - name: Docker Image Build
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}:${{ secrets.FRONT_VERSION }} .        
         
-        # DockerHub Push
-      #- name: DockerHub Push
-      #  run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}       
-
+      # DockerHub Push
+      - name: DockerHub Push
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_ONEGO_FRONT }}:${{ secrets.FRONT_VERSION }}  
+        
   front_server_deploy:
       needs: front_build
       runs-on: ubuntu-latest
@@ -101,7 +101,7 @@ jobs:
 
 
   back_build:    
-    needs: front_server_deploy
+    # needs: front_server_deploy
     runs-on: ubuntu-latest
     steps:        
       - name: Github Repository file 불러오기 
