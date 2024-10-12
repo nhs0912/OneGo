@@ -20,8 +20,4 @@ public class Team extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-
-//    @OneToMany
-//    @JoinColumn(name = "id")
-//    private List<Member> members;
 }
