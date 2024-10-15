@@ -14,7 +14,7 @@ function toggleTheme() {
     prominent
     density="compact">
     <v-app-bar-nav-icon></v-app-bar-nav-icon>
-    <router-link class="custom-link" to="/">
+    <router-link class="custom-link" to="/mainView">
       <v-toolbar-title>OneGo Project</v-toolbar-title>
     </router-link>
     <v-spacer></v-spacer>
@@ -32,6 +32,11 @@ function toggleTheme() {
     <v-btn icon>
       <v-icon>mdi-dots-vertical</v-icon>
     </v-btn>
+    <v-btn icon>
+      <router-link class="custom-link" to="/">
+        logout
+      </router-link>
+    </v-btn>
     <!-- button uses dark theme -->
     <v-btn icon id="mode-switcher" @click="toggleTheme">
       <v-icon :color="(theme.global.current.value.dark) ? 'primary' : 'primary lighten-4'">
@@ -39,6 +44,7 @@ function toggleTheme() {
       </v-icon>
 
     </v-btn>
+
   </v-toolbar>
 
 </template>

@@ -52,7 +52,7 @@
         <!--          Warning: After 3 consecutive failed login attempts, you account will be temporarily locked for three hours. If you must login now, you can also click "Forgot login password?" below to reset the login password.-->
         <!--        </v-card-text>-->
       </v-card>
-
+      <router-link to='/mainView'>
       <v-btn
           class="mb-8"
           color="blue"
@@ -62,6 +62,7 @@
       >
         Log In
       </v-btn>
+      </router-link>
 
       <v-card-text class="text-center">
         <router-link to='/login/signupView'>
