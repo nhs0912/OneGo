@@ -15,7 +15,7 @@ function toggleTheme() {
     density="compact">
     <v-app-bar-nav-icon></v-app-bar-nav-icon>
     <router-link class="custom-link" to="/mainView">
-      <v-toolbar-title>OneGo Project</v-toolbar-title>
+      <v-toolbar-title>OneGo</v-toolbar-title>
     </router-link>
     <v-spacer></v-spacer>
     <v-btn icon>
