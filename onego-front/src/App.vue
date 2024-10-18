@@ -1,12 +1,15 @@
 <template>
   <v-app>
-<!--    <app-header/>-->
+    <app-header/>
       <router-view/>
-<!--    <app-footer/>-->
+    <app-footer/>
   </v-app>
 </template>
 
 <script lang="ts" setup>
+  import {useAppStore} from "@/stores/app";
+
+  const store = useAppStore();
 
 
 

@@ -1,53 +1,92 @@
 <template>
+  <div>
   <form>
-    <v-text-field
-      v-model="state.name"
-      :counter="10"
-      :error-messages="v$.name.$errors.map(e => e.$message)"
-      label="Name"
-      required
-      @blur="v$.name.$touch"
-      @input="v$.name.$touch"
-    ></v-text-field>
-
-    <v-text-field
-      v-model="state.email"
-      :error-messages="v$.email.$errors.map(e => e.$message)"
-      label="E-mail"
-      required
-      @blur="v$.email.$touch"
-      @input="v$.email.$touch"
-    ></v-text-field>
-
-    <v-select
-      v-model="state.select"
-      :error-messages="v$.select.$errors.map(e => e.$message)"
-      :items="items"
-      label="Item"
-      required
-      @blur="v$.select.$touch"
-      @change="v$.select.$touch"
-    ></v-select>
-
-    <v-checkbox
-      v-model="state.checkbox"
-      :error-messages="v$.checkbox.$errors.map(e => e.$message)"
-      label="Do you agree?"
-      required
-      @blur="v$.checkbox.$touch"
-      @change="v$.checkbox.$touch"
-    ></v-checkbox>
-
-    <v-btn
-      class="me-4"
-      @click="v$.$validate"
+    <v-img
+      class="mx-auto my-6"
+      max-width="228"
+      src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"
+    ></v-img>
+    <v-card
+      class="mx-auto pa-12 pb-10"
+      elevation="10"
+      max-width="448"
+      rounded="lg"
     >
-      submit
-    </v-btn>
-    <v-btn @click="clear">
-      clear
-    </v-btn>
+      <div class="text-subtitle-1 text-medium-emphasis">Account</div>
+
+      <v-text-field
+        v-model="state.email"
+        :type="visible ? 'text' : 'account'"
+        :error-messages="v$.email.$errors.map(e => e.$message)"
+        density="compact"
+        placeholder="Email address"
+        prepend-inner-icon="mdi-email-outline"
+        variant="outlined"
+        @blur="v$.email.$touch"
+        @input="v$.email.$touch"
+      ></v-text-field>
+
+      <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+        Password              </div>
+      <v-text-field
+        v-model="state.password"
+        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+        :type="visible ? 'text' : 'password'"
+        :error-messages="v$.password.$errors.map(e => e.$message)"
+        density="compact"
+        placeholder="Enter your password"
+        prepend-inner-icon="mdi-lock-outline"
+        variant="outlined"
+        @click:append-inner="visible = !visible"
+        @blur="v$.password.$touch"
+        @input="v$.password.$touch"
+      ></v-text-field>
+
+      <v-text-field
+        v-model="state.name"
+        :counter="10"
+        :error-messages="v$.name.$errors.map(e => e.$message)"
+        density="compact" placeholder="Enter your name"
+        prepend-inner-icon="mdi-lock-outline"
+        variant="outlined"
+        label="Name"
+        required
+        @blur="v$.name.$touch"
+        @input="v$.name.$touch"
+      ></v-text-field>
+      <v-select
+        v-model="state.select"
+        :error-messages="v$.select.$errors.map(e => e.$message)"
+        :items="items"
+        label="Item"
+        density="compact" placeholder="Enter your name"
+        prepend-inner-icon="mdi-lock-outline"
+        variant="outlined"
+        required
+        @blur="v$.select.$touch"
+        @change="v$.select.$touch"
+      ></v-select>
+
+      <v-checkbox
+        v-model="state.checkbox"
+        :error-messages="v$.checkbox.$errors.map(e => e.$message)"
+        label="Do you agree?"
+        required
+        @blur="v$.checkbox.$touch"
+        @change="v$.checkbox.$touch"
+      ></v-checkbox>
+      <v-btn
+        class="me-4"
+        @click="v$.$validate"
+      >
+        submit
+      </v-btn>
+      <v-btn @click="clear">
+        clear
+      </v-btn>
+    </v-card>
   </form>
+  </div>
 </template>
 <script setup>
 import { reactive } from 'vue'
@@ -59,6 +98,7 @@ const initialState = {
   email: '',
   select: null,
   checkbox: null,
+  password: '',
 }
 
 const state = reactive({
@@ -78,6 +118,7 @@ const rules = {
   select: { required },
   items: { required },
   checkbox: { required },
+  password: { required },
 }
 
 const v$ = useVuelidate(rules, state)

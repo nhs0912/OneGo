@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {useTheme} from 'vuetify'
+import {useAppStore} from "@/stores/app";
 
+const store = useAppStore();
 const theme = useTheme()
 
 function toggleTheme() {
@@ -34,7 +36,12 @@ function toggleTheme() {
     </v-btn>
     <v-btn icon>
       <router-link class="custom-link" to="/">
-        logout
+        <v-col aria-rowspan="auto" cols="auto">
+
+          <v-btn density="default">Login</v-btn>
+
+<!--          <v-btn v-show="!this.store.isLogin" density="default">Logout</v-btn>-->
+        </v-col>
       </router-link>
     </v-btn>
     <!-- button uses dark theme -->

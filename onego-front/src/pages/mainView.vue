@@ -4,9 +4,8 @@
 
 <template>
 mainView
-  <app-header/>
   <router-view/>
-<app-footer/>
+
 </template>
 
 <style scoped>

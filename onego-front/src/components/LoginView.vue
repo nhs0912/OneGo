@@ -54,11 +54,13 @@
       </v-card>
       <router-link to='/mainView'>
       <v-btn
+          :loading="loading"
           class="mb-8"
           color="blue"
           size="large"
           variant="tonal"
           block
+          @click="this.isLogin = !this.isLogin"
       >
         Log In
       </v-btn>
@@ -81,9 +83,14 @@
 <script>
 
 
+import {useAppStore} from "@/stores/app";
+
+let store = useAppStore();
+
 export default {
   data: () => ({
     visible: true,
+    isLogin : store.isLogin
   }),
 }
 </script>
