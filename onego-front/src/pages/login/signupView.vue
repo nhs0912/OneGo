@@ -41,26 +41,27 @@
         @blur="v$.password.$touch"
         @input="v$.password.$touch"
       ></v-text-field>
-
+      <div class="text-subtitle-1 text-medium-emphasis">Name</div>
       <v-text-field
         v-model="state.name"
         :counter="10"
         :error-messages="v$.name.$errors.map(e => e.$message)"
         density="compact" placeholder="Enter your name"
-        prepend-inner-icon="mdi-lock-outline"
+        prepend-inner-icon="mdi-pencil-outline"
         variant="outlined"
         label="Name"
         required
         @blur="v$.name.$touch"
         @input="v$.name.$touch"
       ></v-text-field>
+      <div class="text-subtitle-1 text-medium-emphasis">Team</div>
       <v-select
         v-model="state.select"
         :error-messages="v$.select.$errors.map(e => e.$message)"
         :items="items"
         label="Item"
         density="compact" placeholder="Enter your name"
-        prepend-inner-icon="mdi-lock-outline"
+        prepend-inner-icon="mdi-pencil-outline"
         variant="outlined"
         required
         @blur="v$.select.$touch"
