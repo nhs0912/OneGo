@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import {useTheme} from 'vuetify'
-import {useAppStore} from "@/stores/app";
 
-const store = useAppStore();
 const theme = useTheme()
 
 function toggleTheme() {
