@@ -34,12 +34,8 @@ function toggleTheme() {
     </v-btn>
     <v-btn icon>
       <router-link class="custom-link" to="/">
-        <v-col aria-rowspan="auto" cols="auto">
-
           <v-btn density="default">Login</v-btn>
-
 <!--          <v-btn v-show="!this.store.isLogin" density="default">Logout</v-btn>-->
-        </v-col>
       </router-link>
     </v-btn>
     <!-- button uses dark theme -->
