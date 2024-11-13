@@ -58,9 +58,9 @@
       <v-select
         v-model="state.select"
         :error-messages="v$.select.$errors.map(e => e.$message)"
-        :items="items"
-        label="Item"
-        density="compact" placeholder="Enter your name"
+        :items="teams"
+        label="Team"
+        density="compact" placeholder="Enter your Team"
         prepend-inner-icon="mdi-pencil-outline"
         variant="outlined"
         required
@@ -85,6 +85,9 @@
       <v-btn @click="clear">
         clear
       </v-btn>
+      <v-btn @click="back">
+        back
+      </v-btn>
     </v-card>
   </form>
   </div>
@@ -106,18 +109,18 @@ const state = reactive({
   ...initialState,
 })
 
-const items = [
-  'Item 1',
-  'Item 2',
-  'Item 3',
-  'Item 4',
+const teams = [
+  'FO',
+  'BO',
+  'Common',
+  'etc',
 ]
 
 const rules = {
   name: { required },
   email: { required, email },
   select: { required },
-  items: { required },
+  teams: { required },
   checkbox: { required },
   password: { required },
 }
@@ -130,5 +133,9 @@ function clear () {
   for (const [key, value] of Object.entries(initialState)) {
     state[key] = value
   }
+}
+
+function back() {
+  router.go(-1);
 }
 </script>

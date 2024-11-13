@@ -23,7 +23,6 @@
 
       <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
         Password
-
         <a
             class="text-caption text-decoration-none text-blue"
             href="#"
@@ -81,8 +80,8 @@
   </div>
 </template>
 <script>
-import {ref, computed} from 'vue';
-import {useStore} from 'vuex';
+// import {ref, computed} from 'vue';
+// import {useStore} from 'vuex';
 
 import {useAppStore} from "@/stores/app";
 
