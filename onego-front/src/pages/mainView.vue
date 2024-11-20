@@ -4,7 +4,7 @@
 
 <template>
 mainView
-  <router-view/>
+<!--  <router-view/>-->
 
 </template>
 

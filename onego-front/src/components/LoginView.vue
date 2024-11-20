@@ -3,9 +3,9 @@
     <v-img
         class="mx-auto my-6"
         max-width="228"
-        src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"
+        src="@/assets/image/onego_logo.png"
     ></v-img>
-
+<!--    :src="require(`@/assets/image/vuetify_logo.svg`)"-->
     <v-card
         class="mx-auto pa-12 pb-8"
         elevation="8"
