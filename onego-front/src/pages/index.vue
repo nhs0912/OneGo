@@ -1,7 +1,6 @@
 <template>
-  <LoginView/>
+  <LoginView />
 </template>
 <script lang="ts" setup>
-
 
 </script>
