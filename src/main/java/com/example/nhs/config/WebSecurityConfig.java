@@ -43,7 +43,7 @@ public class WebSecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests()// 인증, 인가 설정
-                .requestMatchers("/posts", "/signup", "/member", "/signin", "/static/**").permitAll()
+                .requestMatchers("/posts", "/signup", "/member", "/signin", "/static/**","/test").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
