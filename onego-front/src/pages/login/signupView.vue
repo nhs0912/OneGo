@@ -19,6 +19,19 @@
           <div class="text-subtitle-1 text-medium-emphasis">Account</div>
 
           <v-text-field
+            v-model="state.account"
+            density="compact"
+            :error-messages="v$.account.$errors.map(e => e.$message)"
+            placeholder="employee id"
+            prepend-inner-icon="mdi-account-outline"
+            :type="visible ? 'text' : 'account'"
+            variant="outlined"
+            @blur="v$.account.$touch"
+            @input="v$.account.$touch"
+          />
+
+          <div class="text-subtitle-1 text-medium-emphasis">Email</div>
+          <v-text-field
             v-model="state.email"
             density="compact"
             :error-messages="v$.email.$errors.map(e => e.$message)"
@@ -52,7 +65,6 @@
             :counter="10"
             density="compact"
             :error-messages="v$.name.$errors.map(e => e.$message)"
-            label="Name"
             placeholder="Enter your name"
             prepend-inner-icon="mdi-pencil-outline"
             required
@@ -66,7 +78,6 @@
             density="compact"
             :error-messages="v$.select.$errors.map(e => e.$message)"
             :items="teams"
-            label="Team"
             placeholder="Enter your Team"
             prepend-inner-icon="mdi-pencil-outline"
             required
@@ -74,21 +85,14 @@
             @blur="v$.select.$touch"
             @change="v$.select.$touch"
           />
-
-          <v-checkbox
-            v-model="state.checkbox"
-            :error-messages="v$.checkbox.$errors.map(e => e.$message)"
-            label="Do you agree?"
-            required
-            @blur="v$.checkbox.$touch"
-            @change="v$.checkbox.$touch"
-          />
           <v-btn
             class="me-4"
-            @click="v$.$validate"
-          >
-            submit
-          </v-btn>
+            @click="v$.$validate().then(
+              () => {
+                test();
+              }
+            )"
+          >submit</v-btn>
           <v-btn @click="$router.go(-1)">
             back
           </v-btn>
@@ -104,6 +108,7 @@ import {email, required} from '@vuelidate/validators'
 
 const initialState = {
   name: '',
+  account : '',
   email: '',
   select: null,
   checkbox: null,
@@ -114,6 +119,11 @@ const state = reactive({
   ...initialState,
 })
 
+const test = function() {
+  console.log("test front 실행!");
+  this.axios.get('');
+}
+
 const teams = [
   'FO',
   'BO',
@@ -123,7 +133,8 @@ const teams = [
 
 const rules = {
   name: {required},
-  email: {required, email},
+  account:{required},
+  email: {email},
   select: {required},
   teams: {required},
   checkbox: {required},
@@ -131,6 +142,7 @@ const rules = {
 }
 
 const v$ = useVuelidate(rules, state)
+
 
 function clear() {
   v$.value.$reset()
